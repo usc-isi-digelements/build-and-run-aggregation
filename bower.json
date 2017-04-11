@@ -1,7 +1,7 @@
 {
   "name": "build-and-run-aggregation",
   "description": "A Polymer Element that builds and runs an elasticsearch aggregation query and returns the transformed results.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authors": [
     "Next Century Corporation"
   ],
