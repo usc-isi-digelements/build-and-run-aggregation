@@ -1,0 +1,33 @@
+{
+  "name": "build-and-run-aggregation",
+  "description": "A Polymer Element that builds and runs an elasticsearch aggregation query and returns the transformed results.",
+  "version": "1.0.0",
+  "authors": [
+    "Next Century Corporation"
+  ],
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "keywords": [
+    "web-component",
+    "polymer"
+  ],
+  "main": "build-and-run-aggregation.html",
+  "homepage": "https://github.com/DigElements/build-and-run-aggregation/",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.7.0",
+    "array-behavior": "DigElements/array-behavior#^1.0.1",
+    "build-and-run-query": "DigElements/build-and-run-query#^1.0.2",
+    "elastic-client-aggregation-builder": "DigElements/elastic-client-aggregation-builder#^1.0.8"
+  },
+  "devDependencies": {
+    "elasticjs-import": "DigElements/elasticjs-import#~1.0.0",
+    "iron-component-page": "PolymerElements/iron-component-page#^1.1.7",
+    "web-component-tester": "^5.0.0"
+  },
+  "resolutions": {
+    "lodash": "~4.17.2"
+  }
+}

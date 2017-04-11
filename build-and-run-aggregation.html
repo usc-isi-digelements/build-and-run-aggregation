@@ -1,0 +1,404 @@
+<!--
+Copyright 2017 Next Century Corporation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../array-behavior/array-behavior.html">
+<link rel="import" href="../build-and-run-query/build-and-run-query.html">
+<link rel="import" href="../elastic-client-aggregation-builder/elastic-client-aggregation-builder.html">
+
+<!--
+A Polymer Element that builds and runs an elasticsearch aggregation query and returns the transformed results.
+
+### Example
+```html
+<build-and-run-aggregation
+  aggregation-field="myAggregationField"
+  fields='"myField"'
+  values='"myValue"'
+  client="[[client]]"
+  index-name="myIndexName"
+  index-types='["myIndexType"]'
+  transform-function="[[myFunction]]"
+  error="{{error}}"
+  loading="{{loading}}"
+  results="{{results}}">
+</build-and-run-aggregation>
+```
+
+@demo demo/index.html
+-->
+
+<dom-module id="build-and-run-aggregation">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <elastic-client-aggregation-builder
+      count="[[aggregationCount]]"
+      direction="[[aggregationDirection]]"
+      field="[[aggregationField]]"
+      name="[[aggregationName]]"
+      order="[[aggregationOrder]]"
+      type="[[aggregationType]]"
+      ejs-aggregation="{{_aggregation}}">
+    </elastic-client-aggregation-builder>
+
+    <build-and-run-query id="runner"
+      type="[[type]]"
+      fields="[[fields]]"
+      values="[[values]]"
+      aggregations="[[buildArray(_aggregation)]]"
+      filters="[[filters]]"
+      page-size="[[pageSize]]"
+      sort-field="[[sortField]]"
+      sort-order="[[sortOrder]]"
+      client="[[client]]"
+      index-name="[[indexName]]"
+      index-types="[[indexTypes]]"
+      raw="[[raw]]"
+      transform-config="[[transformConfig]]"
+      transform-function="[[transformFunction]]"
+      error="{{error}}"
+      loading="{{loading}}"
+      results="{{results}}"
+      total="{{total}}">
+    </build-and-run-query>
+  </template>
+
+  <script>
+  (function() {
+    'use strict';
+
+    /* globals DigBehaviors */
+    Polymer({
+      is: 'build-and-run-aggregation',
+
+      behaviors: [
+        DigBehaviors.ArrayBehavior
+      ],
+
+      properties: {
+        /**
+         * (Optional)
+         *
+         * The name count the elasticsearch aggregation built for the query.
+         *
+         * @type {Number}
+         * @default 0
+         */
+        aggregationCount: {
+          type: Number,
+          value: 0
+        },
+
+        /**
+         * (Optional)
+         *
+         * The direction of the elasticsearch aggregation built for the query.
+         *
+         * @type {String}
+         * @default 'desc'
+         */
+        aggregationDirection: {
+          type: String,
+          value: 'desc'
+        },
+
+        /**
+         * (Required)
+         *
+         * The field of the elasticsearch aggregation built for the query.
+         *
+         * @type {String}
+         */
+        aggregationField: {
+          type: String
+        },
+
+        /**
+         * (Optional)
+         *
+         * The name of the elasticsearch aggregation built for the query.
+         *
+         * @type {String}
+         * @default 'aggregation'
+         */
+        aggregationName: {
+          type: String,
+          value: 'aggregation'
+        },
+
+        /**
+         * (Optional)
+         *
+         * The order of the elasticsearch aggregation built for the query.
+         *
+         * @type {String}
+         * @default ''
+         */
+        aggregationOrder: {
+          type: String,
+          value: ''
+        },
+
+        /**
+         * (Optional)
+         *
+         * The type of the elasticsearch aggregation built for the query.
+         *
+         * @type {String}
+         * @default 'terms'
+         */
+        aggregationType: {
+          type: String,
+          value: 'terms'
+        },
+
+        /**
+         * (Required)
+         *
+         * The elasticsearch client object.
+         *
+         * @type {Object}
+         */
+        client: {
+          type: Object
+        },
+
+        /**
+         * (Output)
+         *
+         * The elasticsearch error.
+         *
+         * @type {Object}
+         */
+        error: {
+          notify: true,
+          type: Object
+        },
+
+        /**
+         * (Required)
+         *
+         * The string or array query fields.
+         *
+         * @type {Array}
+         */
+        fields: {
+          type: Array
+        },
+
+        /**
+         * (Optional)
+         *
+         * The array of elasticsearch filter objects for the query.
+         *
+         * @type {Array}
+         * @default []
+         */
+        filters: {
+          type: Array,
+          value: function() {
+            return [];
+          }
+        },
+
+        /**
+         * (Required)
+         *
+         * The elasticsearch index name.
+         *
+         * @type {String}
+         */
+        indexName: {
+          type: String
+        },
+
+        /**
+         * (Required)
+         *
+         * The array of elasticsearch index types.
+         *
+         * @type {Array}
+         */
+        indexTypes: {
+          type: Array
+        },
+
+        /**
+         * (Output)
+         *
+         * Whether the elasticsearch query is running.
+         *
+         * @type {Boolean}
+         * @default false
+         */
+        loading: {
+          notify: true,
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * (Optional)
+         *
+         * The page size of the elasticsearch query.
+         *
+         * @type {Number}
+         * @default 1
+         */
+        pageSize: {
+          type: Number,
+          value: 1
+        },
+
+        /**
+         * (Optional)
+         *
+         * Whether to return the raw elasticsearch results rather than the elasticsearch results passed through the transformFunction.
+         *
+         * @type {Boolean}
+         * @default false
+         */
+        raw: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * (Output)
+         *
+         * The elasticsearch results passed through the transformFunction (or the raw elasticsearch results if raw is true).
+         *
+         * @type {Object}
+         */
+        results: {
+          notify: true,
+          type: Object
+        },
+
+        /**
+         * (Optional)
+         *
+         * The sort field of the elasticsearch query.
+         *
+         * @type {String}
+         * @default ''
+         */
+        sortField: {
+          type: String,
+          value: ''
+        },
+
+        /**
+         * (Optional)
+         *
+         * The sort order of the elasticsearch query.
+         *
+         * @type {String}
+         * @default 'desc'
+         */
+        sortOrder: {
+          type: String,
+          value: 'desc'
+        },
+
+        /**
+         * (Output)
+         *
+         * The total count of hits in the elasticsearch query results.
+         *
+         * @type {Number}
+         */
+        total: {
+          notify: true,
+          type: Number
+        },
+
+        /**
+         * (Optional)
+         *
+         * The config passed with the elasticsearch results to the transformFunction.
+         *
+         * @type {Object}
+         * @default {}
+         */
+        transformConfig: {
+          type: Object,
+          value: function() {
+            return {};
+          }
+        },
+
+        /**
+         * (Optional)
+         *
+         * The function to transform the elasticsearch results into the output results.  Required if raw is false.
+         *
+         * @type {Function}
+         */
+        transformFunction: {
+          type: Function
+        },
+
+        /**
+         * (Optional)
+         *
+         * The query type.
+         *
+         * @type {String}
+         * @default 'term'
+         */
+        type: {
+          type: String,
+          value: 'term'
+        },
+
+        /**
+         * (Required)
+         *
+         * The string or array query values.
+         *
+         * @type {Array}
+         */
+        values: {
+          type: Array
+        },
+
+        /**
+         * The elasticsearch aggregation object.
+         *
+         * @type {Object}
+         * @private
+         */
+        _aggregation: {
+          type: Object
+        }
+      },
+
+      /**
+       * Resets the results and runs the query.
+       */
+      runQuery: function() {
+        this.$$('#runner').search();
+      }
+    });
+  })();
+  </script>
+</dom-module>

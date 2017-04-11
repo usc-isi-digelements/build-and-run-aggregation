@@ -1,0 +1,115 @@
+<!--
+Copyright 2017 Next Century Corporation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <link rel="import" href="../build-and-run-aggregation.html">
+  <link rel="import" href="../bower_components/elasticjs-import/elasticjs.html">
+</head>
+
+<body>
+  <test-fixture id="build-and-run-aggregation-fixture">
+    <template>
+      <build-and-run-aggregation></build-and-run-aggregation>
+    </template>
+  </test-fixture>
+
+  <script>
+    suite('build-and-run-aggregation tests', function() {
+      var element;
+
+      setup(function(done) {
+        element = fixture('build-and-run-aggregation-fixture');
+        element.aggregationField = 'myAggregationField';
+        element.fields = 'myField';
+        element.indexName = 'myIndexName';
+        element.indexTypes = ['myIndexType'];
+        element.values = 'myValue';
+        flush(done);
+      });
+
+      test('default properties are set to correct values', function() {
+        expect(element.aggregationCount).to.equal(0);
+        expect(element.aggregationDirection).to.equal('desc');
+        expect(element.aggregationName).to.equal('aggregation');
+        expect(element.aggregationOrder).to.equal('');
+        expect(element.aggregationType).to.equal('terms');
+        expect(element.error).to.not.exist;
+        expect(element.filters).to.deep.equal([]);
+        expect(element.loading).to.be.false;
+        expect(element.pageSize).to.equal(1);
+        expect(element.raw).to.be.false;
+        expect(element.results).to.not.exist;
+        expect(element.sortField).to.equal('');
+        expect(element.sortOrder).to.equal('desc');
+        expect(element.transformConfig).to.deep.equal({});
+        expect(element.transformFunction).to.not.exist;
+        expect(element.type).to.equal('term');
+      });
+
+      test('input properties are set to correct values', function() {
+        expect(element.aggregationField).to.equal('myAggregationField');
+        expect(element.fields).to.equal('myField');
+        expect(element.indexName).to.equal('myIndexName');
+        expect(element.indexTypes).to.deep.equal(['myIndexType']);
+        expect(element.values).to.equal('myValue');
+      });
+
+      test('_aggregation is built correctly', function() {
+        expect(element._aggregation).to.exist;
+        expect(element._aggregation.toJSON()).to.deep.equal(ejs.TermsAggregation('aggregation').field('myAggregationField').size(0).toJSON());
+      });
+
+      test('does have elastic-client-aggregation-builder element', function() {
+        expect(element.$$('elastic-client-aggregation-builder')).to.exist;
+        expect(element.$$('elastic-client-aggregation-builder').count).to.equal(0);
+        expect(element.$$('elastic-client-aggregation-builder').direction).to.equal('desc');
+        expect(element.$$('elastic-client-aggregation-builder').field).to.equal('myAggregationField');
+        expect(element.$$('elastic-client-aggregation-builder').name).to.equal('aggregation');
+        expect(element.$$('elastic-client-aggregation-builder').order).to.equal('');
+        expect(element.$$('elastic-client-aggregation-builder').type).to.equal('terms');
+      });
+
+      test('does have build-and-run-query element', function() {
+        expect(element.$$('build-and-run-query')).to.exist;
+        expect(element.$$('build-and-run-query').fields).to.equal('myField');
+        expect(element.$$('build-and-run-query').values).to.equal('myValue');
+        expect(element.$$('build-and-run-query').indexName).to.equal('myIndexName');
+        expect(element.$$('build-and-run-query').indexTypes).to.deep.equal(['myIndexType']);
+        expect(element.$$('build-and-run-query').aggregations).to.be.an('Array');
+        expect(element.$$('build-and-run-query').aggregations.length).to.equal(1);
+        expect(element.$$('build-and-run-query').aggregations[0]).to.be.an('Object');
+        expect(element.$$('build-and-run-query').aggregations[0].toJSON()).to.deep.equal(element._aggregation.toJSON());
+        expect(element.$$('build-and-run-query').filters).to.deep.equal([]);
+        expect(element.$$('build-and-run-query').pageSize).to.equal(1);
+        expect(element.$$('build-and-run-query').sortField).to.equal('');
+        expect(element.$$('build-and-run-query').sortOrder).to.equal('desc');
+        expect(element.$$('build-and-run-query').transformConfig).to.deep.equal({});
+        expect(element.$$('build-and-run-query').type).to.equal('term');
+      });
+
+      test('does have buildArray and runQuery function', function() {
+        expect(element.buildArray).to.be.a('Function');
+        expect(element.runQuery).to.be.a('Function');
+      });
+    });
+  </script>
+</body>
+</html>
