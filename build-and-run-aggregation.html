@@ -31,6 +31,7 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
   client="[[client]]"
   index-name="myIndexName"
   index-types='["myIndexType"]'
+  filters="[]"
   transform-function="[[myFunction]]"
   error="{{error}}"
   loading="{{loading}}"
@@ -205,18 +206,14 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
         },
 
         /**
-         * (Optional)
+         * (Required)
          *
          * The array of elasticsearch filter objects for the query.
          *
          * @type {Array}
-         * @default []
          */
         filters: {
-          type: Array,
-          value: function() {
-            return [];
-          }
+          type: Array
         },
 
         /**

@@ -52,9 +52,9 @@ limitations under the License.
         expect(element.aggregationOrder).to.equal('');
         expect(element.aggregationType).to.equal('terms');
         expect(element.error).to.not.exist;
-        expect(element.filters).to.deep.equal([]);
+        expect(element.filters).to.not.exist;
         expect(element.loading).to.be.false;
-        expect(element.pageSize).to.equal(1);
+        expect(element.pageSize).to.equal(0);
         expect(element.raw).to.be.false;
         expect(element.results).to.not.exist;
         expect(element.sortField).to.equal('');
@@ -97,8 +97,7 @@ limitations under the License.
         expect(element.$$('build-and-run-query').aggregations.length).to.equal(1);
         expect(element.$$('build-and-run-query').aggregations[0]).to.be.an('Object');
         expect(element.$$('build-and-run-query').aggregations[0].toJSON()).to.deep.equal(element._aggregation.toJSON());
-        expect(element.$$('build-and-run-query').filters).to.deep.equal([]);
-        expect(element.$$('build-and-run-query').pageSize).to.equal(1);
+        expect(element.$$('build-and-run-query').pageSize).to.equal(0);
         expect(element.$$('build-and-run-query').sortField).to.equal('');
         expect(element.$$('build-and-run-query').sortOrder).to.equal('desc');
         expect(element.$$('build-and-run-query').transformConfig).to.deep.equal({});

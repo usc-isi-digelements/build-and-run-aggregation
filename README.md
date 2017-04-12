@@ -11,6 +11,7 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
   client="[[client]]"
   index-name="myIndexName"
   index-types='["myIndexType"]'
+  filters="[]"
   transform-function="[[myFunction]]"
   error="{{error}}"
   loading="{{loading}}"
@@ -31,6 +32,7 @@ To return the raw elasticsearch results rather than the results of the transform
   client="[[client]]"
   index-name="myIndexName"
   index-types='["myIndexType"]'
+  filters="[]"
   error="{{error}}"
   loading="{{loading}}"
   results="{{results}}">
