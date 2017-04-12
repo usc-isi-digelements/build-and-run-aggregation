@@ -6,8 +6,8 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
 ```html
 <build-and-run-aggregation
   aggregation-field="myAggregationField"
-  fields='"myField"'
-  values='"myValue"'
+  query-fields='"myField"'
+  query-values='"myValue"'
   client="[[client]]"
   index-name="myIndexName"
   index-types='["myIndexType"]'
@@ -27,8 +27,8 @@ To return the raw elasticsearch results rather than the results of the transform
 <build-and-run-aggregation
   raw
   aggregation-field="myAggregationField"
-  fields='"myField"'
-  values='"myValue"'
+  query-fields='"myField"'
+  query-values='"myValue"'
   client="[[client]]"
   index-name="myIndexName"
   index-types='["myIndexType"]'

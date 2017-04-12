@@ -38,10 +38,10 @@ limitations under the License.
       setup(function(done) {
         element = fixture('build-and-run-aggregation-fixture');
         element.aggregationField = 'myAggregationField';
-        element.fields = 'myField';
+        element.queryFields = 'myField';
+        element.queryValues = 'myValue';
         element.indexName = 'myIndexName';
         element.indexTypes = ['myIndexType'];
-        element.values = 'myValue';
         flush(done);
       });
 
@@ -55,21 +55,21 @@ limitations under the License.
         expect(element.filters).to.not.exist;
         expect(element.loading).to.be.false;
         expect(element.pageSize).to.equal(0);
+        expect(element.queryType).to.equal('terms');
         expect(element.raw).to.be.false;
         expect(element.results).to.not.exist;
         expect(element.sortField).to.equal('');
         expect(element.sortOrder).to.equal('desc');
         expect(element.transformConfig).to.deep.equal({});
         expect(element.transformFunction).to.not.exist;
-        expect(element.type).to.equal('term');
       });
 
       test('input properties are set to correct values', function() {
         expect(element.aggregationField).to.equal('myAggregationField');
-        expect(element.fields).to.equal('myField');
+        expect(element.queryFields).to.equal('myField');
+        expect(element.queryValues).to.equal('myValue');
         expect(element.indexName).to.equal('myIndexName');
         expect(element.indexTypes).to.deep.equal(['myIndexType']);
-        expect(element.values).to.equal('myValue');
       });
 
       test('_aggregation is built correctly', function() {
@@ -101,7 +101,7 @@ limitations under the License.
         expect(element.$$('build-and-run-query').sortField).to.equal('');
         expect(element.$$('build-and-run-query').sortOrder).to.equal('desc');
         expect(element.$$('build-and-run-query').transformConfig).to.deep.equal({});
-        expect(element.$$('build-and-run-query').type).to.equal('term');
+        expect(element.$$('build-and-run-query').type).to.equal('terms');
       });
 
       test('does have buildArray and runQuery function', function() {

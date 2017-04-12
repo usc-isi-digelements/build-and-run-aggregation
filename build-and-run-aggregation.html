@@ -26,8 +26,8 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
 ```html
 <build-and-run-aggregation
   aggregation-field="myAggregationField"
-  fields='"myField"'
-  values='"myValue"'
+  query-fields='"myField"'
+  query-values='"myValue"'
   client="[[client]]"
   index-name="myIndexName"
   index-types='["myIndexType"]'
@@ -61,9 +61,9 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
     </elastic-client-aggregation-builder>
 
     <build-and-run-query id="runner"
-      type="[[type]]"
-      fields="[[fields]]"
-      values="[[values]]"
+      type="[[queryType]]"
+      fields="[[queryFields]]"
+      values="[[queryValues]]"
       aggregations="[[buildArray(_aggregation)]]"
       filters="[[filters]]"
       page-size="[[pageSize]]"
@@ -197,17 +197,6 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
         /**
          * (Required)
          *
-         * The string or array query fields.
-         *
-         * @type {Array}
-         */
-        fields: {
-          type: Array
-        },
-
-        /**
-         * (Required)
-         *
          * The array of elasticsearch filter objects for the query.
          *
          * @type {Array}
@@ -263,6 +252,41 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
         pageSize: {
           type: Number,
           value: 0
+        },
+
+        /**
+         * (Required)
+         *
+         * The string or array query fields.
+         *
+         * @type {Array}
+         */
+        queryFields: {
+          type: Array
+        },
+
+        /**
+         * (Optional)
+         *
+         * The query type.
+         *
+         * @type {String}
+         * @default 'terms'
+         */
+        queryType: {
+          type: String,
+          value: 'terms'
+        },
+
+        /**
+         * (Required)
+         *
+         * The string or array query values.
+         *
+         * @type {Array}
+         */
+        queryValues: {
+          type: Array
         },
 
         /**
@@ -352,30 +376,6 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
          */
         transformFunction: {
           type: Function
-        },
-
-        /**
-         * (Optional)
-         *
-         * The query type.
-         *
-         * @type {String}
-         * @default 'term'
-         */
-        type: {
-          type: String,
-          value: 'term'
-        },
-
-        /**
-         * (Required)
-         *
-         * The string or array query values.
-         *
-         * @type {Array}
-         */
-        values: {
-          type: Array
         },
 
         /**
