@@ -64,6 +64,7 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
       type="[[queryType]]"
       fields="[[queryFields]]"
       values="[[queryValues]]"
+      query="{{query}}"
       aggregations="[[buildArray(_aggregation)]]"
       filters="[[filters]]"
       page-size="[[pageSize]]"
@@ -255,9 +256,21 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
         },
 
         /**
+         * (Optional|Output)
+         *
+         * The elasticsearch query object.  Can be set instead of `queryFields`, `queryType`, and `queryValues`.
+         *
+         * @type {Object}
+         */
+        query: {
+          notify: true,
+          type: Object
+        },
+
+        /**
          * (Required)
          *
-         * The string or array query fields.
+         * The string or array query fields.  Not required if `query` is set.
          *
          * @type {Array}
          */
@@ -268,7 +281,7 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
         /**
          * (Optional)
          *
-         * The query type.
+         * The query type.  Not required if `query` is set.
          *
          * @type {String}
          * @default 'terms'
@@ -281,7 +294,7 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
         /**
          * (Required)
          *
-         * The string or array query values.
+         * The string or array query values.  Not required if `query` is set.
          *
          * @type {Array}
          */
