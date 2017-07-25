@@ -256,6 +256,19 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
         },
 
         /**
+         * (Optional)
+         *
+         * Whether the elasticsearch query is ready to be run.  False forbids the query to be run at all.
+         *
+         * @type {Boolean}
+         * @default true
+         */
+        propertiesReady: {
+          type: Boolean,
+          value: true
+        },
+
+        /**
          * (Optional|Output)
          *
          * The elasticsearch query object.  Can be set instead of `queryFields`, `queryType`, and `queryValues`.
