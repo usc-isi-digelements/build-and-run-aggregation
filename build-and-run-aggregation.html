@@ -57,6 +57,7 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
       name="[[aggregationName]]"
       order="[[aggregationOrder]]"
       type="[[aggregationType]]"
+      filters="[[filters]]"
       ejs-aggregation="{{_aggregation}}">
     </elastic-client-aggregation-builder>
 
@@ -66,7 +67,6 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
       values="[[queryValues]]"
       query="{{query}}"
       aggregations="[[buildArray(_aggregation)]]"
-      filters="[[filters]]"
       page-size="[[pageSize]]"
       sort-field="[[sortField]]"
       sort-order="[[sortOrder]]"
