@@ -15,7 +15,6 @@ limitations under the License.
 -->
 
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../array-behavior/array-behavior.html">
 <link rel="import" href="../build-and-run-query/build-and-run-query.html">
 <link rel="import" href="../elastic-client-aggregation-builder/elastic-client-aggregation-builder.html">
 
@@ -66,7 +65,7 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
       fields="[[queryFields]]"
       values="[[queryValues]]"
       query="{{query}}"
-      aggregations="[[buildArray(_aggregation)]]"
+      aggregations="[[_buildArray(_aggregation)]]"
       page-size="[[pageSize]]"
       sort-field="[[sortField]]"
       sort-order="[[sortOrder]]"
@@ -88,13 +87,8 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
   (function() {
     'use strict';
 
-    /* globals DigBehaviors */
     Polymer({
       is: 'build-and-run-aggregation',
-
-      behaviors: [
-        DigBehaviors.ArrayBehavior
-      ],
 
       properties: {
         /**
@@ -414,6 +408,16 @@ A Polymer Element that builds and runs an elasticsearch aggregation query and re
         _aggregation: {
           type: Object
         }
+      },
+
+      /**
+       * Returns an array with the given aggregation object.
+       *
+       * @param {Object} aggregation
+       * @return {Array}
+       */
+      _buildArray: function(aggregation) {
+        return [aggregation];
       },
 
       /**

@@ -105,8 +105,8 @@ limitations under the License.
         expect(element.$$('build-and-run-query').type).to.equal('terms');
       });
 
-      test('does have buildArray and runQuery function', function() {
-        expect(element.buildArray).to.be.a('Function');
+      test('does have _buildArray and runQuery function', function() {
+        expect(element._buildArray).to.be.a('Function');
         expect(element.runQuery).to.be.a('Function');
       });
     });
