@@ -16,8 +16,8 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.2",
-    "build-and-run-query": "usc-isi-digelements/build-and-run-query#2.5.1",
-    "elastic-client-aggregation-builder": "usc-isi-digelements/elastic-client-aggregation-builder#2.1.0"
+    "build-and-run-query": "usc-isi-digelements/build-and-run-query#^2.5.1",
+    "elastic-client-aggregation-builder": "usc-isi-digelements/elastic-client-aggregation-builder#^2.1.0"
   },
   "devDependencies": {
     "elasticjs-import": "usc-isi-digelements/elasticjs-import#~1.0.0",
